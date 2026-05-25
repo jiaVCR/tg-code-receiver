@@ -1,0 +1,21 @@
+yaml
+     name: Check Telegram Codes
+     on:
+       schedule:
+         - cron: '*/5 * * * *'
+       workflow_dispatch:
+     jobs:
+       check:
+         runs-on: ubuntu-latest
+         steps:
+           - uses: actions/checkout@v4
+           - uses: actions/setup-python@v5
+             with:
+               python-version: '3.11'
+           - name: Install deps
+             run: pip install telethon pysocks
+           - name: Check for codes
+             env:
+               TG_SESSION: ${{ secrets.TG_SESSION }}
+               FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
+             run: python check_codes.py
